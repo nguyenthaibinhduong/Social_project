@@ -1,5 +1,6 @@
 var db = require('../connect')
 var jwt = require('jsonwebtoken');
+require('dotenv').config();
 exports.getRelationships = (req, res) => {
     const q = "SELECT follower_user_id FROM relationships WHERE followed_user_id = ?";
     db.query(q, [req.query.followed_user_id], (err, data) => {
@@ -13,7 +14,7 @@ exports.addRelationships = (req, res) => {
         return res.status(401).json('Not Logged in');
     }
 
-    jwt.verify(token, "secrecKey", (err,data) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,data) => {
         if (err) return res.status(403).json("Token is not valid!");
 
         const q = "INSERT INTO relationships (`follower_user_id`,`followed_user_id`) VALUES (?)";
@@ -35,7 +36,7 @@ exports.deleteRelationships = (req, res) => {
         return res.status(401).json('Not Logged in');
     }
 
-    jwt.verify(token, "secrecKey", (err,data) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,data) => {
         if (err) return res.status(403).json("Token is not valid!");
 
         const q = "DELETE FROM `relationships` WHERE follower_user_id = ? AND followed_user_id = ? ";

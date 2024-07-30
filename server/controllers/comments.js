@@ -1,6 +1,7 @@
 const db = require('../connect');
 const jwt = require('jsonwebtoken');
 const moment = require('moment/moment');
+require('dotenv').config();
 exports.getByPost = (req, res) => { 
     const q = `SELECT c.*, u.id AS user_id, name, profile_image FROM comments AS c JOIN users AS u ON (u.id = c.user_id)
                 where c.post_id = ? ORDER BY c.created_at DESC`;
@@ -15,7 +16,7 @@ exports.addComment = (req, res) => {
     if (!token) { 
         return res.status(401).json('Not Logged in');
     }
-    jwt.verify(token, "secrecKey", (err, data) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) return res.status(403).json('Invalid Token');
         const q = "INSERT INTO comments(description,user_id,post_id,created_at) VALUES (?)";
         const values = [

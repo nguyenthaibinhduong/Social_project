@@ -1,5 +1,6 @@
 var Express = require('express');
 const app = Express();
+require('dotenv').config();
 var userRoutes = require('./routes/users');
 var postRoutes = require('./routes/posts');
 var likeRoutes = require('./routes/likes');
@@ -48,6 +49,6 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/relationships", relationshipsRoutes);
 app.use("/api/auth", authRoutes);
 
-app.listen(8008, () => {
-    console.log("API working on http://localhost:8008 ");
+app.listen(process.env.PORT, () => {
+    console.log("API working on http://localhost:"+process.env.PORT);
 })

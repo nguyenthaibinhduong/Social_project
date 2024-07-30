@@ -1,13 +1,14 @@
 const moment = require('moment/moment');
 var db = require('../connect')
 var jwt = require('jsonwebtoken');
+require('dotenv').config();
 exports.getPost = (req, res) => {
     const user_id = req.query.user_id;
     const token = req.cookies.access_token;
     if (!token) { 
         return res.status(401).json('Not Logged in');
     }
-    jwt.verify(token, "secrecKey", (err, data) => { 
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => { 
         if (err) return res.status(403).json('Invalid Token');
         const q =
         (user_id != undefined) ?
@@ -26,7 +27,7 @@ exports.addPost = (req, res) => {
     if (!token) { 
         return res.status(401).json('Not Logged in');
     }
-    jwt.verify(token, "secrecKey", (err, data) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) return res.status(403).json('Invalid Token');
         const q = "INSERT INTO posts(description,img,user_id,created_at) VALUES (?)";
         const values = [
@@ -47,7 +48,7 @@ exports.deletePost = (req, res) => {
     if (!token) { 
         return res.status(401).json('Not Logged in');
     }
-    jwt.verify(token, "secrecKey", (err, data) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) return res.status(403).json('Invalid Token');
         const q = `DELETE FROM posts WHERE id =? and user_id =?`;
         const values = [

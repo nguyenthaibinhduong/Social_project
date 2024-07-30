@@ -1,6 +1,7 @@
 const db = require('../connect');
 const jwt = require('jsonwebtoken');
 const moment = require('moment/moment');
+require('dotenv').config();
 exports.getLike = (req, res) => { 
     const q = `SELECT user_id from likes where post_id =?`;
     db.query(q, [req.query.post_id], (err, data) => { 
@@ -13,7 +14,7 @@ exports.addLike = (req, res) => {
     if (!token) { 
         return res.status(401).json('Not Logged in');
     }
-    jwt.verify(token, "secrecKey", (err, data) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) return res.status(403).json('Invalid Token');
         const q = "INSERT INTO likes(user_id,post_id) VALUES (?)";
         const values = [
@@ -32,7 +33,7 @@ exports.deleteLike = (req, res) => {
     if (!token) { 
         return res.status(401).json('Not Logged in');
     }
-    jwt.verify(token, "secrecKey", (err, data) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) return res.status(403).json('Invalid Token');
         const q = "DELETE FROM likes where user_id = ? and post_id = ?";
         db.query(q, [data.id,req.query.post_id], (err, data) => { 

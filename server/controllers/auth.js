@@ -1,6 +1,7 @@
 var db = require('../connect')
 var bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken');
+require('dotenv').config();
 exports.register = (req, res) => {
     // KIEM TRA USER DA TON TAI
     const q = "SELECT * FROM users WHERE username = ?";
@@ -40,7 +41,7 @@ exports.login = (req, res) => {
         var checkPassword = bcrypt.compareSync(req.body.password, data[0].password);
         if (!checkPassword) return res.status(400).json("Wrong password or username!");
         // JWT login
-        const token = jwt.sign({ id: data[0].id }, "secrecKey");
+        const token = jwt.sign({ id: data[0].id }, process.env.ACCESS_TOKEN_SECRET);
         const {password,...others} = data[0];//lay thong tin tru mat khau 
         res.cookie("access_token", token, {
             httpOnly: true,

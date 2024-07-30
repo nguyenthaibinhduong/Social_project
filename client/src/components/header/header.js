@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 function Header() {
 	const { currentUser } = useContext(AuthContext);
@@ -7,7 +7,19 @@ function Header() {
 		localStorage.clear();
 		document.cookie = 'access_token=; Max-Age=0; path=/;';
         window.location.href = '/login';
-    };
+	};
+	const [inputs, setInputs] = useState({
+		keyword:""
+	});
+	var handleChange = e => {
+        setInputs(prev=>({...prev, [e.target.name]: e.target.value }));
+	}
+	const navigate = useNavigate() 
+	const handleSearch = (key) => {
+		//window.location.href ="/search/"+key;
+		navigate("/search/"+key);
+	}
+	console.log(inputs);
     return ( 
         				<div className="page-header w-100 px-5 pt-4">
 
@@ -28,8 +40,8 @@ function Header() {
 
 							
 							<div className="input-group">
-								<input type="text" className="form-control bg-light" placeholder="Search anything" />
-								<button className="btn" type="button">
+								<input onChange={handleChange} name="keyword" type="text" className="form-control bg-light " placeholder="Search anything" />
+								<button onClick={()=>handleSearch(inputs.keyword)} className="btn" type="button">
 									<i className="bi bi-search"></i>
 								</button>
 							</div>

@@ -5,6 +5,7 @@ var postRoutes = require('./routes/posts');
 var likeRoutes = require('./routes/likes');
 var commentRoutes = require('./routes/comments');
 var authRoutes = require('./routes/auth');
+var searchRoutes = require('./routes/search');
 var relationshipsRoutes = require('./routes/relationships');
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
@@ -39,6 +40,7 @@ app.post("/api/upload", upload.single('file'), (req, res) => {
     res.status(200).json(file.filename)
 })
 // Routes
+app.use("/api/search", searchRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/likes", likeRoutes);

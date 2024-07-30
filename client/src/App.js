@@ -16,6 +16,7 @@ import './App.css';
 import Header from "./components/header/header";
 import Leftbar from "./components/leftbar/leftbar";
 import Rightbar from "./components/rightbar/rightbar";
+import Search from "./pages/search/search";
 
 
 function App() {
@@ -72,6 +73,10 @@ function App() {
           path: "/profile/:id",
           element: <Profile />,
         },
+        {
+          path: "/search/:key",
+          element: <Search />,
+        },
       ],
     },
     {
@@ -86,6 +91,7 @@ function App() {
 
   return (
     <div>
+      
       <RouterProvider router={router} />
     </div>
   );

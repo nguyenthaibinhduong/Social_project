@@ -60,7 +60,7 @@ function Post({ post }) {
                                     <Link to={"/profile/"+post.user_id}><img src={'../upload/'+post.profile_image} className="rounded-circle" alt="User" width="50" /></Link>
                                 </div>
                                 <div className='col-8'>
-                                    <span className='fw-bolder'>{post.name}</span>
+                                    <Link to={"/profile/"+post.user_id}><span className='fw-bolder text-name'>{post.name}</span></Link>
                                     <p>{ moment(post.created_at).fromNow() }</p>
                                 </div>
                                 {(post.user_id == currentUser.id) &&
@@ -96,7 +96,7 @@ function Post({ post }) {
                             {opencomment && <Comments post_id={post.id} />}
                             
 						</div>
-                        
+
 					</div>
 			    </div>
             </div>

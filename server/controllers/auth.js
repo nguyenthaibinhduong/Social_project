@@ -1,6 +1,7 @@
 var db = require('../connect')
 var bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken');
+const moment = require('moment/moment');
 require('dotenv').config();
 exports.register = (req, res) => {
     // KIEM TRA USER DA TON TAI
@@ -41,18 +42,51 @@ exports.login = (req, res) => {
         var checkPassword = bcrypt.compareSync(req.body.password, data[0].password);
         if (!checkPassword) return res.status(400).json("Wrong password or username!");
         // JWT login
-        const token = jwt.sign({ id: data[0].id }, process.env.ACCESS_TOKEN_SECRET);
-        const {password,...others} = data[0];//lay thong tin tru mat khau 
-        res.cookie("access_token", token, {
-            httpOnly: true,
-        }).status(200).json(others);
+        // Tạo access token và refresh token
+        const access_token = jwt.sign({ id: data[0].id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
+        const refresh_token = jwt.sign({ id: data[0].id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN });
+        
+        const query = "INSERT INTO refresh_tokens (token,created_at) VALUES (?,?)";
+        db.query(query, [refresh_token,moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')], (err, results) => {
+            if (err) return res.status(500).json(err);
+
+            const { password, ...others } = data[0]; // Lấy thông tin trừ mật khẩu 
+            res.cookie("access_token", access_token, {
+                httpOnly: true,
+            }).status(200).json({ ...others, refresh_token });
+        });
      });
     
 }
 
-exports.logout =(req, res) => {
-    res.clearCookie("access_token", {
-        secure: true,
-        sameSite:"none"
-    }).status(200).json("Logged out");
-}
+exports.refreshToken = (req, res) => {
+    const refresh_token = req.body.refresh_token;
+    if (!refresh_token) return res.sendStatus(401);
+
+    const query = "SELECT * FROM refresh_tokens WHERE token = ?";
+    db.query(query, [refresh_token], (err, results) => {
+        if (err) return res.status(500).json(err);
+        if (results.length === 0) return res.status(403).json('refresh-token does not exist');
+
+        jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
+            if (err) return res.status(400).json("refresh-token invalid");
+            const access_token = jwt.sign({ id: data.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
+            res.cookie("access_token", access_token, {
+                httpOnly: true,
+            }).status(200).json({ access_token });
+        });
+    });
+};
+
+exports.logout = (req, res) => {
+    const refresh_token = req.body.refresh_token;
+    if (!refresh_token) {
+        return res.status(400).json({ message: 'Refresh token is required' });
+    }
+    const query = "DELETE FROM refresh_tokens WHERE token = ?";
+    db.query(query, [refresh_token], (err, results) => {
+        if (err) return res.status(500).json(err);
+        res.clearCookie('access_token');
+        return res.status(200).json('Logged out successfully');
+    });
+};

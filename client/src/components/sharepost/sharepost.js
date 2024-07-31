@@ -2,10 +2,16 @@ import { useState } from 'react';
 import './sharepost.css'
 import { AuthContext } from '../../context/authContext';
 import { useContext } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient,useQuery } from "@tanstack/react-query";
 import { makeRequest } from '../../axios'
 function Sharepost() {
     const { currentUser } = useContext(AuthContext);
+    const { isPending, isError, data:user} = useQuery({
+        queryKey: ['user'],
+        queryFn: () => makeRequest.get('/users/find/' + currentUser.id ).then(res => {
+            return res.data;
+        }),
+    });
     const [isFocused, setIsFocused] = useState(false);
     const handleFocus = () => {
         setIsFocused(true);
@@ -48,13 +54,17 @@ function Sharepost() {
     }
     return ( 
         <>
-            <div className="row">
+             {isPending ? (
+            ""
+        ) : (
+                <>
+                    <div className="row">
                 <div className="col-12 p-0">
 					<div className="card">
 						<div className="card-body">
 							<div className='row mb-3'>
                                 <div className='col-1 px-2'>
-                                    <img src={ '../upload/'+currentUser.profile_image } className="rounded-circle" alt="User" width="50" />
+                                    <img src={ '../upload/'+user.profile_image } className="rounded-circle" alt="User" width="50" />
                                 </div>
                                 <div className='col-11' >
                                     <input
@@ -64,7 +74,7 @@ function Sharepost() {
                                         onFocus={handleFocus}
                                         onBlur={handleBlur}
                                         className="form-control text-start share-input "
-                                        placeholder={`What's on your mind ${currentUser.name}?`}
+                                        placeholder={`What's on your mind ${user.name}?`}
                                     />
                                 </div>
                             </div>
@@ -93,6 +103,9 @@ function Sharepost() {
 					</div>
 			    </div>
             </div>
+                </>
+        )}
+            
         </>
      );
 }

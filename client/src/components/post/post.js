@@ -1,16 +1,19 @@
 import { AuthContext } from '../../context/authContext';
 import { Link } from "react-router-dom";
-import { useContext,useState } from "react";
-import Comments from '../comments/comment';
+import { useContext,useEffect,useState } from "react";
+import Comments from '../comments/comments';
 import './post.css'
 import moment from "moment";
 import {  useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
+import ListLike from '../listlike/listlike';
 function Post({ post }) {
     //open comment effect
     const [opencomment, Setopencomment] = useState(false);
      //open comment menu
     const [openmenu, Setopenmenu] = useState(false);
+    const [openlike, Setopenlike] = useState(false);
+    const [numComments, SetnumComments] = useState();
     //get current user
     const { currentUser } = useContext(AuthContext);
     //get likes
@@ -49,6 +52,7 @@ function Post({ post }) {
     const handleDelete = async() => {
         deletemutation.mutate(post.id);
     }
+    
     return ( 
         <>
             <div className="row">
@@ -81,20 +85,22 @@ function Post({ post }) {
                             { post.img && <img src={"/upload/" + post.img} className="card-img-bottom" alt="Best Admin Dashboards" />}
                             
                             <div className="d-flex mt-2">
-                                <button onClick={handleLike} className='btn ps-0 d-flex align-item-center'>
+                                <div className='align-item-center'>
+                                     <button onClick={handleLike} className='btn p-0'>
                                     { isPending ? ("...") :
                                         (data.includes(currentUser.id)) ? (
                                         <i className="bi bi-suit-heart-fill text-danger"></i>
                                     ) : (
                                         <i className="bi bi-suit-heart"></i>
                                     )}
-                                    <p className='d-inline ps-1'>{data ? data.length:0} Likes</p>
-                                </button>
-                                <button onClick={()=>Setopencomment(!opencomment)} className='btn ps-0 d-flex align-item-center'><i className="bi bi-chat "></i><p className='d-inline ps-1'>Comments</p></button>
+                                    </button>
+                                    <button onClick={()=>Setopenlike(!openlike)} className='btn ps-1'>{data ? data.length:0}</button>
+                                </div>
+                                <button onClick={()=>Setopencomment(!opencomment)} className='btn ps-0 d-flex align-item-center'><i className="bi bi-chat "></i><p className='d-inline ps-1'> {numComments}</p></button>
                                 <button className='btn ps-0 d-flex align-item-center'><i className="bi bi-share "></i><p className='d-inline ps-1'>Share</p></button>
                             </div>
-                            {opencomment && <Comments post_id={post.id} />}
-                            
+                            <Comments post_id={post.id} opencomment={opencomment} SetnumComments={SetnumComments} />
+                            {openlike && <ListLike Setopenlike={Setopenlike} post_id={post.id} />}
 						</div>
 
 					</div>

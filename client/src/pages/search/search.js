@@ -9,7 +9,7 @@ function Search() {
     const [page, setPage] = useState('post')
     const [searchKey, setSearchKey] = useState(key);
 
-    useEffect(() => {
+   useEffect(() => {
         setSearchKey(key); // Cập nhật searchKey mỗi khi key thay đổi
     }, [key]);
     return (<>

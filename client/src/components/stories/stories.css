@@ -1,4 +1,19 @@
-.card,
-.story-img{
-    border-radius: 30px;
+.story-slider {
+    width: 100%;
+    max-width: calc(100% - 20px); 
+    margin: auto;
+}
+
+.slick-prev:before, 
+.slick-next:before {
+    color: black;
+}
+
+.slick-dots li button:before {
+    font-size: 10px;
+    color: black;
+}
+
+.slick-dots li.slick-active button:before {
+    color: black;
 }

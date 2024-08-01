@@ -9,6 +9,13 @@ exports.getLike = (req, res) => {
         return res.status(200).json(data.map(like=>like.user_id));
     });
 }
+exports.getUserLiked = (req, res) => { 
+    const q = `SELECT u.id ,u.name , u.profile_image from likes as l join users as u on (l.user_id=u.id) where l.post_id =?`;
+    db.query(q, [req.query.post_id], (err, data) => { 
+        if (err) return res.status(500).json(err);
+        return res.status(200).json(data);
+    });
+}
 exports.addLike = (req, res) => {
     const token = req.cookies.access_token;
     if (!token) { 

@@ -13,7 +13,7 @@ exports.getPost = (req, res) => {
         const q =
         (user_id != undefined) ?
         `SELECT p.*, u.id AS user_id, name, profile_image FROM posts AS p JOIN users AS u ON (u.id = p.user_id) WHERE p.user_id =? ORDER BY p.created_at DESC`:
-        `SELECT p.*, u.id AS user_id, name, profile_image FROM posts AS p JOIN users AS u ON (u.id = p.user_id) LEFT JOIN relationships AS r ON (p.user_id = r.follower_user_id) WHERE r.followed_user_id= ? OR p.user_id =? GROUP BY p.created_at DESC`;
+        `SELECT p.*, u.id AS user_id, name, profile_image FROM posts AS p JOIN users AS u ON (u.id = p.user_id) LEFT JOIN relationships AS r ON (p.user_id = r.followed_user_id) WHERE r.follower_user_id= ? OR p.user_id =? GROUP BY p.id ORDER BY p.created_at DESC`;
         values = user_id !== undefined ?   [user_id]:[data.id, data.id];
         db.query(q, values, (err, data) => { 
             if (err) return res.status(500).json(err);

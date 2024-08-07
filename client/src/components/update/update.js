@@ -5,9 +5,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 function Update({ setShowUpdate, user }) {
     // state de luu thong tin nguoi dung
     const [info, setInfo] = useState({
-        name: '',
-        city: '',
-        website: ''
+        name: user.name,
+        city: user.city,
+        website: user.website
     });
     const handleChange = (e)=>{
         setInfo((prev) => ({ ...prev, [e.target.name]: [e.target.value] }))
@@ -80,15 +80,15 @@ function Update({ setShowUpdate, user }) {
                             </div>}
                     <div className='row mb-2'>
                         <label> Full Name</label>
-                        <input className='form-control' type="text" name='name' onChange={handleChange} />
+                        <input value={info.name} className='form-control' type="text" name='name' onChange={handleChange} />
                     </div>
                     <div className='row mb-2'>
                         <label>City</label>
-                        <input className='form-control' type="text" name='city' onChange={handleChange} />
+                        <input value={info.city} className='form-control' type="text" name='city' onChange={handleChange} />
                     </div>
                     <div className='row mb-2'>
                         <label>Website</label>
-                        <input className='form-control' type="text" name='website' onChange={handleChange} />
+                        <input value={info.website} className='form-control' type="text" name='website' onChange={handleChange} />
                     </div>
                     <div className='w-100 d-flex justify-content-center'>
                         <button onClick={handleClick} className='btn btn-success'>Update</button>

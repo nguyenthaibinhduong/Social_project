@@ -72,9 +72,9 @@ function Post({ post }) {
                                         <button onClick={() => Setopenmenu(!openmenu)} className='btn post-btn'><i className='bi bi-three-dots'></i></button>
                                         {openmenu &&
                                             <div className='menu-post'>
-                                                <ul class="list-group">
-                                                    <a href='' class="list-group-item">An active item</a>
-                                                    <button onClick={handleDelete} class="list-group-item text-start">Delete post</button>
+                                                <ul className="list-group">
+                                                    <a href='' className="list-group-item">An active item</a>
+                                                    <button onClick={handleDelete} className="list-group-item text-start">Delete post</button>
                                                 </ul>
                                             </div>
                                         }

@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/authContext';
 import Update from '../update/update';
 import FollowButton from '../follow/followBtn';
+import ChatButton from '../chatbutton/chatbutton';
 function Info({ data }) {
     const { currentUser } = useContext(AuthContext);
     // open Update model 
@@ -30,7 +31,7 @@ function Info({ data }) {
                                  }
                         </div>
                         <div className="col-2 d-flex justify-content-end align-items-start pt-3">
-                            <button className="btn px-1"><i className='bi bi-chat-text'></i></button>
+                            <ChatButton user_id={ data.id } />
                             <button className="btn px-1"><i className='bi bi-three-dots-vertical'></i></button>
                         </div>
         </div>

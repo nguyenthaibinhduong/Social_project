@@ -4,14 +4,9 @@ import { AuthContext } from '../../context/authContext';
 import { useContext } from "react";
 import { useMutation, useQueryClient,useQuery } from "@tanstack/react-query";
 import { makeRequest } from '../../axios'
+import { useUser } from '../../context/userContext';
 function Sharepost() {
-    const { currentUser } = useContext(AuthContext);
-    const { isPending, isError, data:user} = useQuery({
-        queryKey: ['user'],
-        queryFn: () => makeRequest.get('/users/find/' + currentUser.id ).then(res => {
-            return res.data;
-        }),
-    });
+    const { CurrentUser, isPending} = useUser();
     const [isFocused, setIsFocused] = useState(false);
     const handleFocus = () => {
         setIsFocused(true);
@@ -64,7 +59,7 @@ function Sharepost() {
 						<div className="card-body">
 							<div className='row mb-3'>
                                 <div className='col-1 px-2'>
-                                    <img src={ '../upload/'+user.profile_image } className="rounded-circle" alt="User" width="50" />
+                                    <img src={ '../upload/'+CurrentUser.profile_image } className="rounded-circle" alt="User" width="50" />
                                 </div>
                                 <div className='col-11' >
                                     <input
@@ -74,7 +69,7 @@ function Sharepost() {
                                         onFocus={handleFocus}
                                         onBlur={handleBlur}
                                         className="form-control text-start share-input "
-                                        placeholder={`What's on your mind ${user.name}?`}
+                                        placeholder={`What's on your mind ${CurrentUser.name}?`}
                                     />
                                 </div>
                             </div>

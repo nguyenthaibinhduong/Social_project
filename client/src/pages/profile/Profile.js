@@ -16,22 +16,23 @@ function Profile() {
     const user_id = parseInt(useLocation().pathname.split("/")[2]);
     // Lay thong tin user
     const { isPending, isError, data} = useQuery({
-        queryKey: ['user'],
+        queryKey: ['user',user_id],
         queryFn: () => makeRequest.get('/users/find/' + user_id ).then(res => {
             return res.data;
         }),
     });
+
     return (<>
         {isPending ? (
             ""
         ) : (
                 <>
                     <ScrollToTop />
-                    <Info data = {data} />
+                    <Info data={data} />
+                    <Posts user_id={data.id} />
                 </>
         )}
         
-        {user_id  && <Posts user_id={user_id} />}
     </>);
     
 }

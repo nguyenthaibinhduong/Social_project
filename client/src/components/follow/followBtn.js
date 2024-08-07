@@ -19,7 +19,7 @@ function FollowButton({ user_id }) {
     });
     // Get follower_user_id
     const { isPending:rPending, isError:rError, data:rData} = useQuery({
-        queryKey: ['relationships'+user_id],
+        queryKey: ['relationships'+user_id,user_id],
         queryFn: () => makeRequest.get('/relationships?followed_user_id=' + user_id ).then(res => {
             return res.data;
         }),
@@ -33,8 +33,8 @@ function FollowButton({ user_id }) {
                 ((rPending) ?
                     ("...")
                         :((rData.includes(currentUser.id)) ?
-                        (<div className='d-flex justify-content-center'><button onClick={handleFollow} className='btn btn-secondary'>Followed</button></div>) 
-                        :(<div className='d-flex justify-content-center'><button onClick={handleFollow} className='btn btn-secondary'>Follow</button></div>)
+                        (<div className='d-flex justify-content-center'><button onClick={handleFollow} className='btn btn-outline-secondary'>Unfollow</button></div>) 
+                        :(<div className='d-flex justify-content-center'><button onClick={handleFollow} className='btn btn-secondary text-white'>Follow</button></div>)
                     )
                 )
            }

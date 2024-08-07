@@ -1,4 +1,3 @@
-import Story from "../story/story";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
@@ -11,18 +10,17 @@ function Stories() {
         infinite: true,
         speed: 500,
         slidesToShow: 4,
-        slidesToScroll: 3,
+        slidesToScroll: 2,
         autoplay: false,
         autoplaySpeed: 3000,
         pauseOnHover: true
 	};
-	const {isPending, isError, data} = useQuery({
+	const {isPending, data} = useQuery({
     	queryKey: ['stories'],
 		queryFn: () => makeRequest.get('/posts').then(res => {
 		    return res.data;
 		}),
 	})
-	console.log(data);
 	return ( 
 		 <div className="story-slider">
             {isPending ? (
@@ -39,5 +37,16 @@ function Stories() {
         </div>
      );
 }
-
+function Story({story}) {
+    return ( 
+        <>
+            <div className='px-1'>
+                <div className="card card-story">
+                        <img src={ '../upload/'+story.profile_image } className="rounded-circle story-avatar" alt="User" width="50" />
+						<img src={ '../upload/'+story.img } className="card-img-bottom story-img" alt="Best Admin Dashboards" />
+				</div>
+            </div> 
+        </>
+     );
+}
 export default Stories;

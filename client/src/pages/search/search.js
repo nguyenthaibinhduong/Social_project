@@ -23,11 +23,6 @@ function Search() {
 
             
         </div>
-        <div className="row p-0">
-            <div className="col-12">
-                <h4>Search results for: {searchKey}</h4>
-            </div>
-        </div>
        
         { 
             page ==="post" &&<PostResults keyword={searchKey} />

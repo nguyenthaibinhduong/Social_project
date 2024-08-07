@@ -1,18 +1,17 @@
-import { AuthContext } from '../../context/authContext';
-import { useContext,useEffect,useState } from "react";
+import { useState } from "react";
 import {
     useMutation,
     useQueryClient,
     useQuery
 } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
-
+import moment from "moment";
 import './comments.css'
 import { Link } from 'react-router-dom';
-import Comment from '../comment/comment';
+import { useUser } from '../../context/userContext';
 function Comments({ post_id, opencomment,SetnumComments}) {
-    //get current user
-    const { currentUser } = useContext(AuthContext);
+    const { CurrentUser:user, isPending:uP} = useUser();
+
     const [showMore, setShowMore] = useState(true);
     
     //get comments
@@ -23,7 +22,7 @@ function Comments({ post_id, opencomment,SetnumComments}) {
             return res.data; 
 		}),
     })
-    const {isPending:CommentPend, isError:CommentErr, data:comment } = useQuery({
+    const { data:comment } = useQuery({
     	queryKey: ['comment-num'+post_id,SetnumComments],
         queryFn: () => makeRequest.get(('/comments?post_id=' + post_id)).then(res => {
             SetnumComments(res.data.length);
@@ -70,29 +69,40 @@ function Comments({ post_id, opencomment,SetnumComments}) {
                     
                                
                                 <div className='d-flex justify-content-start'>
-                                {!showMore && <button className='btn ps-0 d-flex align-item-center' onClick={()=>setShowMore(true)}><i class="bi bi-caret-up-fill"></i>Hide comments</button>}
-                                {showMore && <button className='btn ps-0 d-flex align-item-center' onClick={()=>setShowMore(false)}><i class="bi bi-caret-down-fill"></i>More comments</button>}
+                                {!showMore && <button className='btn ps-0 d-flex align-item-center' onClick={()=>setShowMore(true)}><i className="bi bi-caret-up-fill"></i>Hide comments</button>}
+                                {showMore && <button className='btn ps-0 d-flex align-item-center' onClick={()=>setShowMore(false)}><i className="bi bi-caret-down-fill"></i>More comments</button>}
                                 </div>}
                                 {
                                     opencomment &&
                                     
                                 
                                 <div className="row py-4">
-                                    <div className='col-1 px-2'>
-                                        <img src={ "../upload/"+currentUser.profile_image } className="rounded-circle" alt="User" width="40" />
-                                    </div>
-                                    <div className='col-11 d-flex'>
+                            <div className='col-1 px-2'>
+                                {uP ? '...' :
+                                    <img src={"../upload/"+user.profile_image } className="rounded-circle" alt="User" width="40" />
+                                }
+                                        
+                            </div>
+                                
+                            <div className='col-11 d-flex'>
+                                    <form method='post' className='w-100'>
                                         <div className='input-group'>
+                                           
                                             <input 
                                                 onChange={(e) =>setDescription(e.target.value)}
                                                 value={description}
                                                 type="text"
                                                 className='form-control'
+                                                name={"comment"+post_id}
                                             />
-                                            <button onClick={handleClick} className='btn btn-dark'>Comment</button>
+                                            
+                                            <button type="submit" onClick={handleClick} className='btn btn-dark btn-comment'>Comment</button>
+                                            
                                         </div>
+                                        </form>  
                                         
-                                    </div>
+                                </div>
+                                
 		                        </div>
                                 }
                                 {isError?"Somthing went wrong !":(isPending?"Loading...":data.map((comment) => (
@@ -102,5 +112,30 @@ function Comments({ post_id, opencomment,SetnumComments}) {
         </>
      );
 }
-
+function Comment({ comment,handleDelete }) {
+    const { CurrentUser} = useUser();
+    const [showmenu, setshowmenu] = useState(false);
+    
+    return ( 
+        <>
+             <div  className='row py-1'>
+                                        <div className='col-1 px-2'>
+                                            <img src={"../upload/"+comment.profile_image} className="rounded-circle" alt="User" width="40" />
+                                        </div>
+                                        <div className='col-8'>
+                                            <p ><Link to={"/profile/"+comment.user_id} className="fw-bolder">{comment.name}</Link> - {moment(comment.created_at).fromNow()}</p>
+                                            <p>{comment.description}</p>
+                                            
+                                        </div>
+                                        {((comment.user_id)===CurrentUser.id) &&
+                                        <div className='col-3 d-flex justify-content-end'>
+                                            <button onClick={()=>setshowmenu(!showmenu)} className='btn post-btn'><i className="bi bi-three-dots"></i></button>
+                                            {showmenu &&
+                                            <button onClick={()=>handleDelete(comment.id)} className='btn post-btn'>Delete</button>}
+                                        </div>
+                                        }
+            </div>
+        </>
+     );
+}
 export default Comments;

@@ -122,3 +122,16 @@ body, html, #root, .App {
   padding: 20px;
   overflow-y: auto;
 }
+.online-avt{
+  position: relative;
+}
+.online-dot{
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #26ba4f;
+  margin-bottom: 9%;
+  margin-left: 10%;
+  border-radius: 25px;
+
+}

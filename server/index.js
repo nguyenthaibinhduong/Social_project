@@ -37,10 +37,29 @@ const io = new Server(server, {
         methods: ['GET', 'POST'],
     },
 });
+//SOCKET METHOD TO SET ONLINE ACCESS
+let users = [];
+
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+  return users.find((user) => user.userId === userId);
+};
 //SOCKET.IO API
 io.on('connection', (socket) => {
     console.log('a user connected:', socket.id);
 
+    socket.on("addUser", (userId) => {
+    addUser(userId, socket.id);
+        io.emit("getUsers", users);
+    });
     socket.on('joinRoom', (roomId) => {
         socket.join(roomId);
         console.log('joined:', roomId);
@@ -53,6 +72,8 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('user disconnected:', socket.id);
+        removeUser(socket.id);
+        io.emit("getUsers", users);
     });
 });
 

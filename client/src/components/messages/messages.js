@@ -18,7 +18,7 @@ function Messages({ room_id, user_id }) {
     
     
     // Khởi tạo kết nối Socket.IO
-    const socket = useSocket();
+    const { socket } = useSocket();
 
     useEffect(() => {
         if (socket) {

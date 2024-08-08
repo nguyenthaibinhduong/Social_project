@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import './sharepost.css'
-import { AuthContext } from '../../context/authContext';
-import { useContext } from "react";
-import { useMutation, useQueryClient,useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient} from "@tanstack/react-query";
 import { makeRequest } from '../../axios'
 import { useUser } from '../../context/userContext';
 function Sharepost() {

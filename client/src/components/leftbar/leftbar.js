@@ -5,16 +5,16 @@ function Leftbar() {
         <div className="card p-2">
            <ul className="nav flex-column">
                 <li className="nav-item">
-                    <a className="nav-link friend-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
+                    <a className="nav-link friend-link" href="#"><i className="bi bi-house-door-fill"></i> Home</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link friend-link" href="#"><i class="bi bi-messenger"></i> Chat</a>
+                    <a className="nav-link friend-link" href="#"><i className="bi bi-messenger"></i> Chat</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link friend-link" href="#"><i class="bi bi-people-fill"></i> Friend</a>
+                    <a className="nav-link friend-link" href="#"><i className="bi bi-people-fill"></i> Friend</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link friend-link" href="#" ><i class="bi bi-caret-right-square-fill"></i> Watch</a>
+                    <a className="nav-link friend-link" href="#" ><i className="bi bi-caret-right-square-fill"></i> Watch</a>
                 </li>
             </ul>
             

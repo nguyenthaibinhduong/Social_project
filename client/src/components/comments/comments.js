@@ -79,7 +79,7 @@ function Comments({ post_id, opencomment,SetnumComments}) {
                                 <div className="row py-4">
                             <div className='col-1 px-2'>
                                 {uP ? '...' :
-                                    <img src={"../upload/"+user.profile_image } className="rounded-circle" alt="User" width="40" />
+                                    <img src={ (user.profile_image!== null)?"../upload/"+user.profile_image:"https://avatar.iran.liara.run/username?username="+user.name } className="rounded-circle" alt="User" width="40" />
                                 }
                                         
                             </div>
@@ -120,7 +120,7 @@ function Comment({ comment,handleDelete }) {
         <>
              <div  className='row py-1'>
                                         <div className='col-1 px-2'>
-                                            <img src={"../upload/"+comment.profile_image} className="rounded-circle" alt="User" width="40" />
+                                            <img src={ (comment.profile_image!== null)?"../upload/"+comment.profile_image:"https://avatar.iran.liara.run/username?username="+comment.name } className="rounded-circle" alt="User" width="40" />
                                         </div>
                                         <div className='col-8'>
                                             <p ><Link to={"/profile/"+comment.user_id} className="fw-bolder">{comment.name}</Link> - {moment(comment.created_at).fromNow()}</p>

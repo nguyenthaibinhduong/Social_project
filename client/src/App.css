@@ -25,6 +25,10 @@
     margin-left: 0;
     margin-right: 300px;
   }
+  .messenger-btn,
+  .logo-brand{
+    display: block !important;
+  }
 }
 
 @media (max-width: 800px) {
@@ -40,6 +44,10 @@
   .header {
     text-align: center;
     font-size: 18px;
+  }
+  .messenger-btn,
+  .logo-brand{
+    display: block !important;
   }
 }
 

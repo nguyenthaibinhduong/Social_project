@@ -32,9 +32,11 @@ function Login() {
 		<>
 			<div className="container py-5">
 				<div className="row justify-content-center">
-                    <div className="text-danger text-center" role="alert">
-                        {errors&&errors}
-				    </div>
+				{errors&&
+                    <div className="alert alert-danger" role="alert">
+                       { errors}
+					</div>
+				}
             </div>
 				            		<form method="post">
 			<div className="login-box">
@@ -49,7 +51,7 @@ function Login() {
 					<div className="mb-3">
 						<div className="d-flex justify-content-between">
 							<label className="form-label">Password</label>
-							<a href="forgot-password.html" className="btn-link ml-auto">Forgot password?</a>
+							<Link to="/reset_password" className="btn-link ml-auto">Forgot password?</Link>
 						</div>
 						<input onChange={handleChange} name="password" type="password" className="form-control" />
 					</div>

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import PostResults from "../../components/result/postsResult copy";
+import PostResults from "../../components/result/postsResult";
 import UserResults from "../../components/result/usersResult";
 import './search.css'
 import { useEffect, useState } from "react";

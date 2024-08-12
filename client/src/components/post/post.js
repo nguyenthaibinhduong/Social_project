@@ -1,6 +1,6 @@
 import { AuthContext } from '../../context/authContext';
 import { Link } from "react-router-dom";
-import { useContext,useEffect,useState } from "react";
+import { useContext,useState } from "react";
 import Comments from '../comments/comments';
 import './post.css'
 import moment from "moment";
@@ -17,7 +17,7 @@ function Post({ post }) {
     //get current user
     const { currentUser } = useContext(AuthContext);
     //get likes
-    const { isPending, isError, data} = useQuery({
+    const { isPending, data} = useQuery({
         queryKey: ['likes',post.id],
         queryFn: () => makeRequest.get('/likes?post_id=' + post.id).then(res => {
             return res.data;
@@ -59,16 +59,20 @@ function Post({ post }) {
                 <div className="col-12 p-0">
 					<div className="card">
                         <div className="card-body">
-                            <div className='row mb-3'>
-                                <div className='col-1 px-2'>
-                                    <Link to={"/profile/"+post.user_id}><img src={'../upload/'+post.profile_image} className="rounded-circle" alt="User" width="50" /></Link>
+                            <div className='w-100 d-flex justify-content-between mb-3'>
+                                <div className='user-post d-flex'>
+                                    <div className='me-1'>
+                                        <Link to={"/profile/"+post.user_id}><img src={'../upload/'+post.profile_image} className="rounded-circle" alt="User" width="50" /></Link>
+                                    </div>
+                                    <div className='me-4'>
+                                        <Link to={"/profile/"+post.user_id}><span className='fw-bolder text-name'>{post.name}</span></Link>
+                                        <p>{ moment(post.created_at).fromNow() }</p>
+                                    </div>
                                 </div>
-                                <div className='col-8'>
-                                    <Link to={"/profile/"+post.user_id}><span className='fw-bolder text-name'>{post.name}</span></Link>
-                                    <p>{ moment(post.created_at).fromNow() }</p>
-                                </div>
-                                {(post.user_id == currentUser.id) &&
-                                    <div className='col-1 offset-2'>
+                               
+                                
+                                {(post.user_id === currentUser.id) &&
+                                    <div className='col-1 offset-1 '>
                                         <button onClick={() => Setopenmenu(!openmenu)} className='btn post-btn'><i className='bi bi-three-dots'></i></button>
                                         {openmenu &&
                                             <div className='menu-post'>

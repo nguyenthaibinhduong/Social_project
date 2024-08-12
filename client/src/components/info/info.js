@@ -15,8 +15,8 @@ function Info({ data }) {
     }
     return (<>
                 <div className="row images">
-                        <img src={'../upload/'+ data.cover_image} alt="" className="cover-img" />
-                        <img src={'../upload/'+ data.profile_image} alt="" className="profile-img" />
+                        <img src={( data.cover_image!==null)?'../upload/'+ data.cover_image:"https://placeholder.pics/svg/300/DEDEDE/555555/none%20BACKGROUND"} alt="" className="cover-img" />
+                        <img src={ (data.profile_image!== null)?"../upload/"+data.profile_image:"https://avatar.iran.liara.run/username?username="+data.name } alt="" className="profile-img" />
                     </div>
                     <div className="row profile-info mb-3">
                         <div className="col-2 d-flex justify-content-start align-items-end">

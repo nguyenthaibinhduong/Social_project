@@ -1,5 +1,5 @@
 
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { makeRequest } from '../../axios'
 import Info from '../info/info';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ function UserResults({ keyword }) {
 		}),
     })
     return (<>
-        {datalength==0 && <p className="text-dark text-primary fs-6">No result user for { key } !</p>}
+        {datalength===0 && <p className="text-dark text-primary fs-6">No result user for { key } !</p>}
         {isError?"Somthing went wrong !":(isPending?"Loading...":data.map((user) => (
 			<Info data={user} />
 		)))}

@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
     const [onlineUsers, setonlineUsers] = useState([]);
     const {currentUser} = useContext(AuthContext);
     useEffect(() => {
-        socket.current = io('http://localhost:8008');
+        socket.current = io(process.env.REACT_APP_API_URL);
 
         if (currentUser) {
             socket.current.emit("addUser", currentUser.id);

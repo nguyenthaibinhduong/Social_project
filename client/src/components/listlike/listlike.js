@@ -30,7 +30,7 @@ function ListLike({ Setopenlike, post_id }) {
                                         <img src={"../upload/"+user.profile_image} className="rounded-circle" alt="User" width="40" />
                                         <span className='ms-2'><Link to={"/profile/"+user.id}>{user.name}</Link></span>
                                     </td>
-                                 {currentUser.id!=user.id ?   
+                                 {currentUser.id!==user.id ?   
                                     <td className='d-flex justify-content-end'>
                                      
                                         <FollowButton user_id={user.id} />

@@ -17,10 +17,69 @@
 .slick-dots li.slick-active button:before {
     color: black;
 }
-.card,
-.story-img{
-    border-radius: 30px;  
+@media (min-width: 1025px){
+    .story-img{
+        min-height:40vh;
+    }
+    .card,
+    .story-img{
+        border-radius: 20px;
+    }
+    .story-avatar{
+        width: 50px;
+    }
 }
+@media (min-width: 1025px)and (max-width: 1200px) {
+    .story-img{
+        min-height:25vh;
+    }
+    .card,
+    .story-img{
+        border-radius: 20px;
+    }
+}
+@media (min-width:801px) and (max-width: 1024px) {
+    .story-img{
+        min-height:30vh;
+    }
+    .card,
+    .story-img{
+        border-radius: 15px;
+    }
+    .story-avatar{
+        width: 40px;
+    }
+}
+@media (min-width:501px) and (max-width: 800px) {
+    .story-img{
+        min-height:35vh;
+        border-radius: 15px;
+    }
+    .card,
+    .story-img{
+        border-radius: 15px;
+    }
+    .story-avatar{
+        width: 0px;
+    }
+}
+@media (max-width: 500px) {
+    .story-img{
+        min-height:20vh;
+        border-radius: 15px;
+    }
+    .card,
+    .story-img{
+        border-radius: 15px;
+    }
+    .story-avatar{
+        width: 0px;
+    }
+}
+
+
+
+   
 .card-story{
     position: relative;
     background-color: #f8f8fb;
@@ -35,7 +94,7 @@
 }
 
 .story-img{
-    min-height:40vh;
+   
     object-fit: cover;
     transition: 0.5s;
 }

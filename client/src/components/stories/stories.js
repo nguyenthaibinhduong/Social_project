@@ -22,19 +22,21 @@ function Stories() {
 		}),
 	})
 	return ( 
-		 <div className="story-slider">
+		<>
             {isPending ? (
                 <div>Loading...</div>
-            ) : (
-                <Slider {...settings}>
-                    {data.map((story) => (
-                        <div key={story.id}>
-                            <Story story={story} />
-                        </div>
-                    ))}
-                </Slider>
+            ) : ((data.length>3)?
+                <div className="story-slider">
+                    <Slider {...settings}>
+                        {data.map((story) => (
+                            <div key={story.id}>
+                                <Story story={story} />
+                            </div>
+                        ))}
+                    </Slider>
+                </div>:""
             )}
-        </div>
+        </>
      );
 }
 function Story({story}) {
@@ -42,8 +44,8 @@ function Story({story}) {
         <>
             <div className='px-1'>
                 <div className="card card-story">
-                        <img src={ '../upload/'+story.profile_image } className="rounded-circle story-avatar" alt="User" width="50" />
-						<img src={ '../upload/'+story.img } className="card-img-bottom story-img" alt="Best Admin Dashboards" />
+                        <img src={ '../upload/'+story.profile_image } className="rounded-circle story-avatar" alt="User" />
+						<img src={ '../upload/'+story.img } className="story-img" alt="Best Admin Dashboards" />
 				</div>
             </div> 
         </>

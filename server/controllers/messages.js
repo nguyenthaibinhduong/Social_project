@@ -53,8 +53,8 @@ exports.getListRoom = (req, res) => {
                    m1.message as latest_message,
                    m1.created_at as latest_message_time,
                    u.id as user_id,
-                   u.name as user_name,
-                   u.profile_image as user_profile_image
+                   u.name as name,
+                   u.profile_image as profile_image
             FROM rooms r
             JOIN room_users ru1 ON r.id = ru1.room_id
             JOIN room_users ru2 ON r.id = ru2.room_id AND ru2.user_id != ru1.user_id

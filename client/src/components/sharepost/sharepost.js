@@ -3,6 +3,7 @@ import './sharepost.css'
 import { useMutation, useQueryClient} from "@tanstack/react-query";
 import { makeRequest } from '../../axios'
 import { useUser } from '../../context/userContext';
+import { Link } from "react-router-dom";
 function Sharepost() {
     const { CurrentUser, isPending} = useUser();
     const [isFocused, setIsFocused] = useState(false);
@@ -57,7 +58,7 @@ function Sharepost() {
 						<div className="card-body">
 							<div className='row mb-3'>
                                 <div className='col-1 px-2'>
-                                    <img src={ '../upload/'+CurrentUser.profile_image } className="rounded-circle" alt="User" width="50" />
+                                    <Link to={"/profile/"+CurrentUser.id}><img src={ (CurrentUser.profile_image!== null)?"../upload/"+CurrentUser.profile_image:"https://avatar.iran.liara.run/username?username="+CurrentUser.name } className="rounded-circle" alt="User" width="50" /></Link>
                                 </div>
                                 <div className='col-11' >
                                     <input

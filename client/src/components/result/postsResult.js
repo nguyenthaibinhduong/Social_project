@@ -1,5 +1,5 @@
 import Post from "../post/post";
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
+import { useQuery} from '@tanstack/react-query'
 import { makeRequest } from '../../axios'
 import { useEffect, useState } from "react";
 function PostResults({ keyword }) {
@@ -17,7 +17,7 @@ function PostResults({ keyword }) {
     })
     
     return (<>
-        {datalength == 0 && <p className="text-dark text-primary fs-6">No result post for { key } !</p>}
+        {datalength === 0 && <p className="text-dark text-primary fs-6">No result post for { key } !</p>}
         {isError?"Somthing went wrong !":(isPending?"Loading...":data.map((post) => (
 			<Post key={post.id} post={post} />
 		)))}

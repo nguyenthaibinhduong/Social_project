@@ -42,12 +42,11 @@ function Header() {
                 <>
                   <div className="page-header w-100 px-5 pt-4">
 
-					<div className="toggle-sidebar" id="toggle-sidebar"><i className="bi bi-list"></i></div>
 
 					
-					<ol className="breadcrumb d-md-flex d-none">
+					<ol className="breadcrumb d-md-flex d-none logo-brand">
 						<li className="breadcrumb-item">
-							<Link to="/"><i className="bi bi-house"></i></Link>
+							<Link className="" to="/"><i className="bi bi-house"></i></Link>
 						</li>
 
 					</ol>
@@ -68,14 +67,14 @@ function Header() {
 
 						</div>
 						
-						<MessengerButton  />
+						<MessengerButton   />
 						
 						<ul className="header-actions">
 							<li className="dropdown">
 								<a href="#" id="userSettings" className="user-settings" data-toggle="dropdown" aria-haspopup="true">
                             <span className="user-name d-none d-md-block">{ CurrentUser.name }</span>
 									<span className="avatar">
-										<img src={ "../upload/"+CurrentUser.profile_image } alt="Admin Templates" />
+										<img src={ (CurrentUser.profile_image!== null)?"../upload/"+CurrentUser.profile_image:"https://avatar.iran.liara.run/username?username="+CurrentUser.name } alt="Admin Templates" />
 										<span className="status online"></span>
 									</span>
 								</a>
@@ -109,7 +108,7 @@ function MessengerButton() {
 	return (
 		<>
 			{isError?"Somthing went wrong !":(isPending?"Loading...":chatroom.map((room) => (
-				<Link key={room.room_id} to={"/chat/"+room.room_id} className="leads d-none d-xl-flex fs-4 text-primary">
+				<Link key={room.room_id} to={"/chat/"+room.room_id} className="leads d-none d-xl-flex fs-4 text-primary messenger-btn">
 					<i className="bi bi-messenger"></i>
 				</Link>
 			)))}

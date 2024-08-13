@@ -4,10 +4,9 @@ require('dotenv').config();
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var multer = require('multer')
-const http = require('http');
 const { Server } = require('socket.io');
 const session = require('express-session');
-
+const http = require('http');
 // Routes
 var userRoutes = require('./routes/users');
 var postRoutes = require('./routes/posts');
@@ -26,21 +25,20 @@ app.use((req, res, next) => {
 });
 app.use(Express.json());
 app.use(cors({
-    origin: 'http://localhost:4000'
+	origin: process.env.APP_ORIGIN_URL,//
+	credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE']
+	
 }))
 app.use(cookieParser());
 // Cấu hình session middleware
-app.use(session({
-    secret: process.env.SESSION_RECRET, // Thay bằng một chuỗi bí mật của bạn
-    resave: false, // Không lưu session nếu không có sự thay đổi nào
-    saveUninitialized: false, // Không lưu session chưa được khởi tạo
-    cookie: { maxAge: 600000 } // Thời gian sống của cookie session (đơn vị là ms, ví dụ: 10 phút = 600000 ms)
-}));
+
 //SETUP SOCKET.IO API
 const server = http.createServer(app); // Tạo server HTTP từ express
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:4000',
+        origin: process.env.APP_ORIGIN_URL,//
+	credentials: true,
         methods: ['GET', 'POST'],
     },
 });
@@ -49,19 +47,15 @@ let users = [];
 
 const addUser = (userId, socketId) => {
   !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
+  users.push({ userId, socketId });
 };
 
 const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
-const getUser = (userId) => {
-  return users.find((user) => user.userId === userId);
-};
 //SOCKET.IO API
 io.on('connection', (socket) => {
-    console.log('a user connected:', socket.id);
 
     socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
@@ -69,7 +63,6 @@ io.on('connection', (socket) => {
     });
     socket.on('joinRoom', (roomId) => {
         socket.join(roomId);
-        console.log('joined:', roomId);
     });
 
     socket.on('sendMessage', (messageData) => {
@@ -78,7 +71,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log('user disconnected:', socket.id);
         removeUser(socket.id);
         io.emit("getUsers", users);
     });
@@ -115,6 +107,7 @@ app.get("*", (req, res) => {
 	res.send("<h1>Hello World API<h1>");
 });
 
-server.listen(process.env.PORT, () => {
-  console.log("API working on http://localhost:"+process.env.PORT);
-})
+server.listen(process.env.PORT || 8008, () => {
+    console.log('Server listening on port '+ process.env.PORT);
+    
+});

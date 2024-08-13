@@ -6,7 +6,6 @@ require('dotenv').config();
 const validator = require('validator');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const session = require('express-session');
 //RESGISTER
 exports.register = (req, res) => {
    const { username, email, password ,confirm_password, name } = req.body;
@@ -152,7 +151,9 @@ exports.login = (req, res) => {
             const { password, ...others } = data[0];
 
             res.cookie("access_token", access_token, {
-                httpOnly: true,
+               httpOnly: true,
+               secure: true, // Đảm bảo chỉ gửi cookie qua HTTPS trong môi trường sản xuất
+                sameSite:'None', // Ngăn chặn CSRF
             }).status(200).json({ ...others, refresh_token });
         });
     });
@@ -171,7 +172,9 @@ exports.refreshToken = (req, res) => {
             if (err) return res.status(400).json("refresh-token invalid");
             const access_token = jwt.sign({ id: data.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
             res.cookie("access_token", access_token, {
-                httpOnly: true,
+                 httpOnly: true,
+               secure: true, // Đảm bảo chỉ gửi cookie qua HTTPS trong môi trường sản xuất
+                sameSite:'None', // Ngăn chặn CSRF
             }).status(200).json({ access_token });
         });
     });
@@ -255,9 +258,13 @@ exports.ConfirmPasswordRequest = (req, res) => {
         if (!isTokenValid) return res.status(400).json('Invalid token');
         res.cookie("isVerified",true, {
                 httpOnly: true,
+               secure: true, // Đảm bảo chỉ gửi cookie qua HTTPS trong môi trường sản xuất
+                sameSite:'None', // Ngăn chặn CSRF
         });
         res.cookie("email",email, {
                 httpOnly: true,
+               secure: true, // Đảm bảo chỉ gửi cookie qua HTTPS trong môi trường sản xuất
+                sameSite:'None', // Ngăn chặn CSRF
         });
         res.status(200).json('Token verified successfully' );
     });

@@ -22,11 +22,13 @@ function Register() {
 		setLoading(true);
         e.preventDefault();
         try {
-			await axios.post("http://localhost:8008/api/auth/register", inputs);
+			await axios.post(process.env.REACT_APP_API_URL+"/api/auth/register", inputs);
 			navigate("/confirm_email/verify");
 		} catch (error) {
 			//console.error(error);
-           setErrors(error.response.data);
+			setLoading(false);
+			setErrors(error.response.data);
+			
         }
 	}
 	

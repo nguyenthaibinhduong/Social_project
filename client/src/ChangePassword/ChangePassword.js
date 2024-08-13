@@ -19,6 +19,7 @@ function ChangePassword() {
 			await change_password(inputs);
 			navigate("/login");
 		} catch (error) {
+			setLoading(false);
 			 setErrors(error.response.data);
 		}
 
